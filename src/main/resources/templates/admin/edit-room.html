@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Room | Rehana Groups</title>
+
+    <link rel="stylesheet" th:href="@{/css/output.css}">
+</head>
+
+<body class="bg-slate-50 text-slate-800">
+
+<div th:replace="~{fragments/navbar ::navbar}"></div>
+
+<main>
+
+    <!-- Header -->
+    <section class="bg-slate-900 text-white">
+        <div class="mx-auto max-w-7xl px-6 py-14 text-center">
+
+            <p class="text-sm font-semibold uppercase tracking-[0.3em] text-amber-400">
+                Room Management
+            </p>
+
+            <h1 class="mt-3 text-4xl font-bold sm:text-5xl">
+                Edit Room
+            </h1>
+
+            <p class="mx-auto mt-4 max-w-xl text-slate-300">
+                Update the information and settings of this room.
+            </p>
+
+        </div>
+    </section>
+
+
+    <!-- Form -->
+    <section class="mx-auto max-w-2xl px-6 py-16">
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-8 shadow-lg sm:p-10">
+
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-slate-900">
+                    Room Information
+                </h2>
+
+                <p class="mt-1 text-sm text-slate-500">
+                    Update the room details below.
+                </p>
+            </div>
+
+
+            <form th:action="@{/admin/rooms/edit/{id}(id=${roomId})}"
+                  th:object="${roomDTO}"
+                  method="post"
+                  class="space-y-6">
+
+
+                <!-- Room Number -->
+                <div>
+                    <label for="roomNumber"
+                           class="mb-2 block text-sm font-semibold text-slate-700">
+                        Room Number
+                    </label>
+
+                    <input id="roomNumber"
+                           type="number"
+                           th:field="*{roomNumber}"
+                           min="1"
+                           required
+                           class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3
+                                  text-slate-800 outline-none transition
+                                  focus:border-amber-500 focus:ring-2 focus:ring-amber-200">
+                </div>
+
+
+                <!-- Room Type -->
+                <div>
+                    <label for="roomType"
+                           class="mb-2 block text-sm font-semibold text-slate-700">
+                        Room Type
+                    </label>
+
+                    <select id="roomType"
+                            th:field="*{roomType}"
+                            required
+                            class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3
+                                   text-slate-800 outline-none transition
+                                   focus:border-amber-500 focus:ring-2 focus:ring-amber-200">
+
+                        <option th:each="type : ${roomTypes}"
+                                th:value="${type}"
+                                th:text="${type}">
+                        </option>
+
+                    </select>
+                </div>
+
+
+                <!-- Price -->
+                <div>
+                    <label for="price"
+                           class="mb-2 block text-sm font-semibold text-slate-700">
+                        Price Per Night
+                    </label>
+
+                    <input id="price"
+                           type="number"
+                           th:field="*{price}"
+                           min="0.01"
+                           step="0.01"
+                           required
+                           class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3
+                                  text-slate-800 outline-none transition
+                                  focus:border-amber-500 focus:ring-2 focus:ring-amber-200">
+                </div>
+
+
+                <!-- Capacity -->
+                <div>
+                    <label for="capacity"
+                           class="mb-2 block text-sm font-semibold text-slate-700">
+                        Capacity
+                    </label>
+
+                    <input id="capacity"
+                           type="number"
+                           th:field="*{capacity}"
+                           min="1"
+                           required
+                           class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3
+                                  text-slate-800 outline-none transition
+                                  focus:border-amber-500 focus:ring-2 focus:ring-amber-200">
+                </div>
+
+
+                <!-- Description -->
+                <div>
+                    <label for="description"
+                           class="mb-2 block text-sm font-semibold text-slate-700">
+                        Description
+                    </label>
+
+                    <textarea id="description"
+                              th:field="*{description}"
+                              rows="5"
+                              required
+                              class="w-full resize-none rounded-lg border border-slate-300 bg-white px-4 py-3
+                                     text-slate-800 outline-none transition
+                                     focus:border-amber-500 focus:ring-2 focus:ring-amber-200"></textarea>
+                </div>
+
+
+                <!-- CSRF -->
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}">
+
+
+                <!-- Submit -->
+                <button type="submit"
+                        class="w-full rounded-lg bg-slate-900 px-6 py-3
+                               font-semibold text-white shadow-md
+                               transition hover:bg-slate-800 hover:-translate-y-0.5">
+                    Update Room
+                </button>
+
+            </form>
+
+
+            <!-- Back -->
+            <div class="mt-6 border-t border-slate-200 pt-6 text-center">
+
+                <a th:href="@{/admin/rooms}"
+                   class="text-sm font-semibold text-slate-600
+                          transition hover:text-amber-600">
+                    ← Back to Rooms
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+</html>

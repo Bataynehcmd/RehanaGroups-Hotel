@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Rooms | Rehana Groups</title>
+
+    <link rel="stylesheet" th:href="@{/css/output.css}">
+</head>
+
+<body class="bg-slate-50 text-slate-800">
+
+<div th:replace="~{fragments/navbar ::navbar}"></div>
+
+<main>
+
+    <!-- Page Header -->
+    <section class="bg-slate-900 text-white">
+        <div class="mx-auto max-w-7xl px-6 py-16 text-center">
+
+            <p class="text-sm font-semibold uppercase tracking-[0.3em] text-amber-400">
+                Accommodation
+            </p>
+
+            <h1 class="mt-3 text-4xl font-bold sm:text-5xl">
+                Our Rooms
+            </h1>
+
+            <p class="mx-auto mt-4 max-w-2xl text-slate-300">
+                Discover our comfortable rooms and choose the perfect stay
+                for your visit.
+            </p>
+
+        </div>
+    </section>
+
+
+    <!-- Rooms -->
+    <section class="mx-auto max-w-7xl px-6 py-16">
+
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+
+            <div th:each="room : ${rooms}"
+                 class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm
+                        transition duration-300
+                        hover:-translate-y-1 hover:border-amber-300 hover:shadow-xl">
+
+                <!-- Card Header -->
+                <div class="mb-5 flex items-start justify-between">
+
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-widest text-amber-600"
+                           th:text="${room.roomType}">
+                        </p>
+
+                        <h3 class="mt-1 text-2xl font-bold text-slate-900"
+                            th:text="'Room ' + ${room.roomNumber}">
+                        </h3>
+                    </div>
+
+                    <div class="rounded-lg bg-slate-100 px-3 py-2 text-right">
+
+                        <p class="text-lg font-bold text-slate-900"
+                           th:text="'JOD ' + ${room.price}">
+                        </p>
+
+                        <p class="text-xs text-slate-500">
+                            per night
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Card Information -->
+                <div class="mb-5 border-y border-slate-100 py-4">
+
+                    <p class="text-sm text-slate-600">
+                        <span class="font-semibold text-slate-800">
+                            Capacity:
+                        </span>
+
+                        <span th:text="${room.capacity} + ' guests'"></span>
+                    </p>
+
+                </div>
+
+
+                <!-- Action -->
+                <a th:href="@{/rooms/{roomId}(roomId=${room.roomId})}"
+                   class="block w-full rounded-lg bg-slate-900 px-4 py-2.5
+                          text-center text-sm font-semibold text-white
+                          transition hover:bg-slate-800">
+                    View Details
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+</html>

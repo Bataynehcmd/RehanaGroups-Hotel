@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Search Rooms | Rehana Groups</title>
+
+    <link rel="stylesheet" th:href="@{/css/output.css}">
+</head>
+
+<body class="bg-slate-50 text-slate-800">
+
+<div th:replace="~{fragments/navbar ::navbar}"></div>
+
+<main>
+
+    <!-- Header -->
+    <section class="bg-slate-900 text-white">
+        <div class="mx-auto max-w-7xl px-6 py-14 text-center">
+
+            <p class="text-sm font-semibold uppercase tracking-[0.3em] text-amber-400">
+                Availability
+            </p>
+
+            <h1 class="mt-3 text-4xl font-bold sm:text-5xl">
+                Find Your Room
+            </h1>
+
+            <p class="mx-auto mt-4 max-w-xl text-slate-300">
+                Search for available rooms based on your stay.
+            </p>
+
+        </div>
+    </section>
+
+
+    <!-- Search Form -->
+    <section class="mx-auto max-w-5xl px-6 py-12">
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-lg sm:p-8">
+
+            <form th:action="@{/rooms/search}"
+                  th:object="${searchDTO}"
+                  method="post"
+                  class="grid gap-5 md:grid-cols-4 md:items-end">
+
+                <!-- Check In -->
+                <div>
+                    <label for="checkIn"
+                           class="mb-2 block text-sm font-semibold text-slate-700">
+                        Check In
+                    </label>
+
+                    <input id="checkIn"
+                           type="date"
+                           th:field="*{checkIn}"
+                           required
+                           class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3
+                                  text-slate-800 outline-none transition
+                                  focus:border-amber-500 focus:ring-2 focus:ring-amber-200">
+                </div>
+
+
+                <!-- Check Out -->
+                <div>
+                    <label for="checkOut"
+                           class="mb-2 block text-sm font-semibold text-slate-700">
+                        Check Out
+                    </label>
+
+                    <input id="checkOut"
+                           type="date"
+                           th:field="*{checkOut}"
+                           required
+                           class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3
+                                  text-slate-800 outline-none transition
+                                  focus:border-amber-500 focus:ring-2 focus:ring-amber-200">
+                </div>
+
+
+                <!-- Guests -->
+                <div>
+                    <label for="guests"
+                           class="mb-2 block text-sm font-semibold text-slate-700">
+                        Guests
+                    </label>
+
+                    <input id="guests"
+                           type="number"
+                           th:field="*{guests}"
+                           min="1"
+                           required
+                           class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3
+                                  text-slate-800 outline-none transition
+                                  focus:border-amber-500 focus:ring-2 focus:ring-amber-200">
+                </div>
+
+
+                <!-- CSRF -->
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}">
+
+
+                <!-- Search -->
+                <button type="submit"
+                        class="rounded-lg bg-slate-900 px-6 py-3
+                               font-semibold text-white shadow-md
+                               transition hover:bg-slate-800 hover:-translate-y-0.5">
+                    Search Rooms
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+
+    <!-- Results -->
+    <section class="mx-auto max-w-7xl px-6 pb-16">
+
+        <div class="mb-6">
+            <h2 class="text-2xl font-bold text-slate-900">
+                Available Rooms
+            </h2>
+
+            <p class="mt-1 text-sm text-slate-500">
+                Rooms matching your search criteria.
+            </p>
+        </div>
+
+
+        <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-lg">
+
+            <div class="overflow-x-auto">
+
+                <table class="w-full min-w-[900px] text-left">
+
+                    <thead class="bg-slate-900 text-sm text-white">
+
+                    <tr>
+                        <th class="px-6 py-4 font-semibold">Room Number</th>
+                        <th class="px-6 py-4 font-semibold">Type</th>
+                        <th class="px-6 py-4 font-semibold">Price</th>
+                        <th class="px-6 py-4 font-semibold">Capacity</th>
+                        <th class="px-6 py-4 font-semibold">Description</th>
+                        <th class="px-6 py-4 font-semibold">Active</th>
+                        <th class="px-6 py-4 text-center font-semibold">Details</th>
+                        <th class="px-6 py-4 text-center font-semibold">Book</th>
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody class="divide-y divide-slate-100">
+
+                    <tr th:each="room : ${rooms}"
+                        class="transition hover:bg-slate-50">
+
+                        <td class="px-6 py-5 font-semibold text-slate-900"
+                            th:text="'Room ' + ${room.roomNumber}">
+                        </td>
+
+                        <td class="px-6 py-5 text-sm text-slate-600"
+                            th:text="${room.roomType}">
+                        </td>
+
+                        <td class="px-6 py-5 font-semibold text-slate-900"
+                            th:text="'JOD ' + ${room.price}">
+                        </td>
+
+                        <td class="px-6 py-5 text-sm text-slate-600"
+                            th:text="${room.capacity}">
+                        </td>
+
+                        <td class="max-w-xs px-6 py-5 text-sm leading-6 text-slate-500"
+                            th:text="${room.description}">
+                        </td>
+
+                        <td class="px-6 py-5">
+
+                            <span th:if="${room.active}"
+                                  class="inline-flex rounded-full bg-green-100 px-3 py-1
+                                         text-xs font-semibold text-green-700">
+                                Available
+                            </span>
+
+                            <span th:unless="${room.active}"
+                                  class="inline-flex rounded-full bg-red-100 px-3 py-1
+                                         text-xs font-semibold text-red-700">
+                                Unavailable
+                            </span>
+
+                        </td>
+
+                        <td class="px-6 py-5 text-center">
+
+                            <a th:href="@{/rooms/{roomId}(roomId=${room.roomId})}"
+                               class="text-sm font-semibold text-slate-700
+                                      transition hover:text-amber-600">
+                                Details
+                            </a>
+
+                        </td>
+
+                        <td class="px-6 py-5 text-center">
+
+                            <a th:if="${room.active}"
+                               th:href="@{/rooms/{roomId}/book(roomId=${room.roomId})}"
+                               class="inline-block rounded-lg bg-slate-900 px-4 py-2
+                                      text-sm font-semibold text-white
+                                      transition hover:bg-slate-800">
+                                Book
+                            </a>
+
+                            <span th:unless="${room.active}"
+                                  class="text-sm text-slate-400">
+                                —
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+</html>
